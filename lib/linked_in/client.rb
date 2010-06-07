@@ -136,11 +136,10 @@ module LinkedIn
     end
     
     def send_message(recipients, subject, body)
-      # path = "/people/~/mailbox"
-      # post(path, Message.new(recipients, subject, body).to_xml)
+      path = "/people/~/mailbox"
       message = ROXML::XML::Document.new
       message.root = Message.new(recipients, subject, body).to_xml
-      puts message.to_xml.to_s
+      post(path, message.to_xml.to_s)
     end
        
     # helpful in making authenticated calls and writing the 
