@@ -57,6 +57,13 @@ module LinkedIn
       raise_errors(response)
       response
     end
+
+    def post(path, options = {})
+      path = "/v1#{path}"
+      response = access_token.post(path, options, {"Content-Type" => "text/xml"})
+      raise_errors(response)
+      response
+    end
     
     def delete(path, options={})
       path = "/v1#{path}"
@@ -128,9 +135,14 @@ module LinkedIn
       Network.from_xml(get(to_uri(path, options)))
     end
     
-    
-    
-    
+    def send_message(recipients, subject, body)
+      # path = "/people/~/mailbox"
+      # post(path, Message.new(recipients, subject, body).to_xml)
+      message = ROXML::XML::Document.new
+      message.root = Message.new(recipients, subject, body).to_xml
+      puts message.to_xml.to_s
+    end
+       
     # helpful in making authenticated calls and writing the 
     # raw xml to a fixture file
     def write_fixture(path, filename)
